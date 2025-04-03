@@ -1,0 +1,73 @@
+/* This is a CSS file for styling the task list and task form. */
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-item span {
+  flex: 1;
+}
+
+.task-item .btn-danger {
+  padding: 5px 10px;}
+
+.task-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.task-form input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.task-form .btn-primary {
+  padding: 8px 12px;}
+
+.task-board {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.task-column {
+  flex: 1;
+  background: #f4f4f4;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.task-column h3 {
+  text-align: center;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-item select {
+  padding: 5px;
+  border-radius: 5px;
+}

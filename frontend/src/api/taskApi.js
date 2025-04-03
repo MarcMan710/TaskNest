@@ -1,25 +1,29 @@
-import API from './axiosInstance';
+// This file contains CRUD operations for tasks.
+import axiosInstance from "./axiosInstance";
 
-// ✅ Get All Tasks
-export const getTasks = async () => {
-  const response = await API.get('/tasks');
-  return response.data;
+const taskApi = {
+  async getTasks() {
+    const response = await axiosInstance.get("/tasks");
+    return response.data; // Array of tasks
+  },
+
+  async addTask(task) {
+    const response = await axiosInstance.post("/tasks", task);
+    return response.data; // New task object
+  },
+
+  async updateTask(taskId, updatedTask) {
+    const response = await axiosInstance.put(`/tasks/${taskId}`, updatedTask);
+    return response.data; // Updated task object
+  },
+
+  async deleteTask(taskId) {
+    await axiosInstance.delete(`/tasks/${taskId}`);
+  },
+  async updateTaskStatus(taskId, status) {
+    const response = await axiosInstance.put(`/tasks/${taskId}`, { status });
+    return response.data;
+  },
 };
 
-// ✅ Create Task
-export const createTask = async (taskData) => {
-  const response = await API.post('/tasks', taskData);
-  return response.data;
-};
-
-// ✅ Update Task
-export const updateTask = async (id, taskData) => {
-  const response = await API.put(`/tasks/${id}`, taskData);
-  return response.data;
-};
-
-// ✅ Delete Task
-export const deleteTask = async (id) => {
-  const response = await API.delete(`/tasks/${id}`);
-  return response.data;
-};
+export default taskApi;

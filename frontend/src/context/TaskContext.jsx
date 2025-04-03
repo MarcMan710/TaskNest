@@ -1,61 +1,84 @@
-import { createContext, useState, useEffect } from 'react';
-import { getTasks, createTask, updateTask, deleteTask } from '../api/taskApi';
+// This file manages tasks globally to avoid excessive API calls.
+import { createContext, useState, useEffect, useContext } from "react";
+import AuthContext from "./AuthContext";
 
-// ✅ Create Context
-export const TaskContext = createContext();
+const TaskContext = createContext();
 
-// ✅ Task Provider
 export const TaskProvider = ({ children }) => {
+  const { token } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch Tasks
+  // Fetch tasks when user logs in
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const data = await getTasks();
+    if (token) fetchTasks();
+  }, [token]);
+
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch("/api/tasks", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (response.ok) {
         setTasks(data);
-      } catch (error) {
-        console.error('Error fetching tasks:', error.response?.data?.message);
       }
-      setLoading(false);
-    };
-    fetchTasks();
-  }, []);
-
-  // ✅ Add Task
-  const addTask = async (taskData) => {
-    try {
-      const newTask = await createTask(taskData);
-      setTasks([...tasks, newTask]);
     } catch (error) {
-      console.error('Error adding task:', error.response?.data?.message);
+      console.error("Error fetching tasks", error);
     }
   };
 
-  // ✅ Update Task
-  const editTask = async (id, taskData) => {
+  const addTask = async (task) => {
     try {
-      const updatedTask = await updateTask(id, taskData);
-      setTasks(tasks.map(task => (task.id === id ? updatedTask : task)));
+      const response = await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(task),
+      });
+      const newTask = await response.json();
+      if (response.ok) setTasks([...tasks, newTask]);
     } catch (error) {
-      console.error('Error updating task:', error.response?.data?.message);
+      console.error("Error adding task", error);
     }
   };
 
-  // ✅ Delete Task
-  const removeTask = async (id) => {
+  const updateTask = async (taskId, updatedTask) => {
     try {
-      await deleteTask(id);
-      setTasks(tasks.filter(task => task.id !== id));
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedTask),
+      });
+      if (response.ok) {
+        setTasks(tasks.map((t) => (t.id === taskId ? updatedTask : t)));
+      }
     } catch (error) {
-      console.error('Error deleting task:', error.response?.data?.message);
+      console.error("Error updating task", error);
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) setTasks(tasks.filter((t) => t.id !== taskId));
+    } catch (error) {
+      console.error("Error deleting task", error);
     }
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, addTask, editTask, removeTask, loading }}>
+    <TaskContext.Provider value={{ tasks, fetchTasks, addTask, updateTask, deleteTask }}>
       {children}
     </TaskContext.Provider>
   );
 };
+
+export default TaskContext;

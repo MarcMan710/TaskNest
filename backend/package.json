@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "tasknest-backend",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -9,15 +9,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "TaskNest - Task Management App Backend",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.13.3"
+    "pg": "^8.14.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

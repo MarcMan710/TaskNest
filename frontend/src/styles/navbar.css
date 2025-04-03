@@ -1,0 +1,31 @@
+/* This is the CSS file for the Navbar component in a React application. It styles the navigation bar, including the logo, links, and buttons. The navbar has a blue background with white text and rounded corners. The links are displayed in a horizontal list with some spacing between them. The buttons have no background or border and change the cursor to a pointer when hovered over. */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+nav h1 {
+  color: white;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+nav ul li button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}

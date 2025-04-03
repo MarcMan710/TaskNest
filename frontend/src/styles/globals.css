@@ -1,0 +1,27 @@
+/* This is a CSS file that contains global styles for the application. It includes styles for the body, headings, and other elements to ensure a consistent look and feel across the application. The styles are designed to be responsive and user-friendly, providing a clean and modern interface for users to interact with the application. */
+/* Reset & Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+  margin-bottom: 10px;
+}

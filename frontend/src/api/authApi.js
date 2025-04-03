@@ -1,18 +1,16 @@
-import API from './axiosInstance';
+// This file handles Login, Register, and Logout API calls.
+import axiosInstance from "./axiosInstance";
 
-// ✅ Register User
-export const registerUser = async (userData) => {
-  const response = await API.post('/auth/register', userData);
-  return response.data;
+const authApi = {
+  async login(email, password) {
+    const response = await axiosInstance.post("/users/login", { email, password });
+    return response.data; 
+  },
+
+  async register(name, email, password) {
+    const response = await axiosInstance.post("/users/register", { name, email, password });
+    return response.data;
+  },
 };
 
-// ✅ Login User
-export const loginUser = async (userData) => {
-  const response = await API.post('/auth/login', userData);
-  return response.data;
-};
-
-// ✅ Logout (Remove Token)
-export const logoutUser = () => {
-  localStorage.removeItem('token');
-};
+export default authApi;

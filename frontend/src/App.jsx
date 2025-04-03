@@ -1,13 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import NotFound from './pages/NotFound';
-import Navbar from './components/Layout/Navbar';
-import Footer from './components/Layout/Footer';
-import { AuthProvider } from './context/AuthContext';
-import { TaskProvider } from './context/TaskContext';
+// This component sets up React Router and wraps the app with authentication and task context.
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import TasksPage from "./pages/TasksPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import Navbar from "./components/layout/Navbar";
+import { AuthProvider } from "./context/AuthContext";
+import { TaskProvider } from "./context/TaskContext";
+import "./styles/globals.css"; // Import global styles
 
 function App() {
   return (
@@ -16,13 +17,12 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
-          <Footer />
         </Router>
       </TaskProvider>
     </AuthProvider>

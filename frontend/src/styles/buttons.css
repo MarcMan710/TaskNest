@@ -1,0 +1,17 @@
+/* This file styles all buttons consistently. */
+.btn {
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-danger {
+  background-color: red;
+  color: white;
+}

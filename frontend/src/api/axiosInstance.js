@@ -1,18 +1,20 @@
-import axios from 'axios';
+// This file creates an Axios instance that automatically sends JWT tokens with each request.
+import axios from "axios";
 
-// ✅ Base API configuration
-const API = axios.create({
-  baseURL: 'http://localhost:5000/api', // Backend URL
-  headers: { 'Content-Type': 'application/json' },
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-// ✅ Attach JWT token to every request if available
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+// Interceptor: Automatically add Authorization header if token exists
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-export default API;
+export default axiosInstance;
