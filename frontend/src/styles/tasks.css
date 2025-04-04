@@ -1,6 +1,10 @@
 /* This is a CSS file for styling the task list and task form. */
 
-.task-list {
+.task-container {
+  margin-bottom: 20px;
+}
+
+ul.task-list {
   list-style: none;
   padding: 0;
 }
@@ -20,17 +24,8 @@
   flex: 1;
 }
 
-.task-item .btn-danger {
-  padding: 5px 10px;}
-
-.task-form {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.task-form input {
-  flex: 1;
+.task-item select, .task-item input[type="date"] {
+  border: 1px solid #ccc;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -39,6 +34,14 @@
 .task-form .btn-primary {
   padding: 8px 12px;}
 
+.task-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+
+/* Task Board Styles */
 .task-board {
   display: flex;
   gap: 20px;
@@ -55,19 +58,13 @@
 .task-column h3 {
   text-align: center;
 }
-
-.task-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Task Priority Styles */
+.priority-low,
+.priority-medium,
+.priority-high {
+  border-left: 5px solid;
 }
 
-.task-item select {
-  padding: 5px;
-  border-radius: 5px;
-}
+.priority-low { border-left-color: green; }
+.priority-medium { border-left-color: orange; }
+.priority-high { border-left-color: red; }

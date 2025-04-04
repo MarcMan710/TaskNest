@@ -1,29 +1,27 @@
-// This file contains CRUD operations for tasks.
-import axiosInstance from "./axiosInstance";
+// taskApi.js
+const API_BASE_URL = "http://localhost:5000/api"; // Replace with your actual API base URL
+
+const getTasks = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${API_BASE_URL}/tasks`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    throw error; // Re-throw the error to be handled by the caller
+  }
+};
 
 const taskApi = {
-  async getTasks() {
-    const response = await axiosInstance.get("/tasks");
-    return response.data; // Array of tasks
-  },
-
-  async addTask(task) {
-    const response = await axiosInstance.post("/tasks", task);
-    return response.data; // New task object
-  },
-
-  async updateTask(taskId, updatedTask) {
-    const response = await axiosInstance.put(`/tasks/${taskId}`, updatedTask);
-    return response.data; // Updated task object
-  },
-
-  async deleteTask(taskId) {
-    await axiosInstance.delete(`/tasks/${taskId}`);
-  },
-  async updateTaskStatus(taskId, status) {
-    const response = await axiosInstance.put(`/tasks/${taskId}`, { status });
-    return response.data;
-  },
+  getTasks,
 };
 
 export default taskApi;

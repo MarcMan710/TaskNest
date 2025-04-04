@@ -1,31 +1,35 @@
-// This is the main entry point for the TaskNest API server.
+// server.js - Main entry point for the TaskNest API server.
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const loadEnv = require("./config/dotenv");
 const errorMiddleware = require("./middleware/errorMiddleware");
+const taskRoutes = require("./routes/taskRoutes");
+const userRoutes = require("./routes/userRoutes");
 
-// Load environment variables
+// Load environment variables from .env file
 loadEnv();
 
+// Initialize Express app
 const app = express();
 
-// Middleware
+// Enable CORS for all origins
 app.use(cors());
+
+// Parse JSON request bodies
 app.use(express.json());
 
-// Routes
-app.use("/api/tasks", require("./routes/taskRoutes"));
-app.use("/api/users", require("./routes/userRoutes"));
+// Define API routes
+app.use("/api/tasks", taskRoutes);
+app.use("/api/users", userRoutes);
 
-// Root route
+// Define root route
 app.get("/", (req, res) => {
   res.send("TaskNest API is running...");
 });
 
-// Error Handling Middleware (must be at the end)
+// Error handling middleware (must be defined last)
 app.use(errorMiddleware);
 
-// Start Server
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

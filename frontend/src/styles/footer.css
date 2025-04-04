@@ -1,12 +1,13 @@
 /* This is the CSS file for the footer component */
 .footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   background-color: #333;
   color: #fff;
   padding: 20px;
   text-align: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+  
 }
 
 .footer p {

@@ -1,9 +1,11 @@
 // This page allows users to log in.
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InputField from "../components/ui/InputField";
+import Button from "../components/ui/Button";
 import authApi from "../api/authApi";
 import useAuth from "../hooks/useAuth";
-import "../../styles/forms.css";
+import "../styles/forms.css";
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -26,12 +28,28 @@ const LoginPage = () => {
   return (
     <div>
       <h2>Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleLogin}>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-        <button type="submit">Login</button>
+        <InputField
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+        <InputField
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+        />
+        <Button type="submit" className="primary">
+          Login
+        </Button>
       </form>
+
+
     </div>
   );
 };

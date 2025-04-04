@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import taskApi from "../../api/taskApi";
 import TaskItem from "./TaskItem";
 import "../../styles/tasks.css";
@@ -25,25 +25,21 @@ const TaskList = () => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
-  const renderTasks = (status) => (
-    <div className="task-column">
-      <h3>{status}</h3>
-      <ul>
-        {tasks
-          .filter((task) => task.status === status)
-          .map((task) => (
-            <TaskItem key={task.id} task={task} onUpdate={handleUpdateTask} onDelete={handleDeleteTask} />
-          ))}
-      </ul>
-    </div>
-  );
+  // Sorting logic: Prioritize High > Medium > Low and then by due date
+  const sortedTasks = [...tasks].sort((a, b) => {
+    const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    }
+    return new Date(a.dueDate) - new Date(b.dueDate);
+  });
 
   return (
-    <div className="task-board">
-      {renderTasks("To-Do")}
-      {renderTasks("In Progress")}
-      {renderTasks("Done")}
-    </div>
+    <ul className="task-list">
+      {sortedTasks.map((task) => (
+        <TaskItem key={task.id} task={task} onUpdate={handleUpdateTask} onDelete={handleDeleteTask} />
+      ))}
+    </ul>
   );
 };
 

@@ -7,10 +7,13 @@
   font-family: Arial, sans-serif;
 }
 
+/* Body Styles */
 body {
   background-color: #f4f4f4;
   color: #333;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {

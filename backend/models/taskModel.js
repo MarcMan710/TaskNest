@@ -1,38 +1,90 @@
-// This file defines the TaskModel which interacts with the database to perform CRUD operations on tasks.
-const pool = require("../config/db");
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/sequelize');
+const { Op } = require('sequelize');
+
+const Task = sequelize.define('Task', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.TEXT,
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  completed: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  status: {
+    type: DataTypes.ENUM("To-Do", "In Progress", "Done"),
+    defaultValue: "To-Do",
+  },
+  priority: {
+    type: DataTypes.ENUM("Low", "Medium", "High"),
+    defaultValue: "Medium",
+  },
+  dueDate: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
+}, {
+  tableName: 'tasks',
+  timestamps: true,
+  underscored: true,
+});
 
 const TaskModel = {
   async getAllTasks() {
-    const result = await pool.query("SELECT * FROM tasks ORDER BY created_at DESC");
-    return result.rows;
+    return await Task.findAll({
+      order: [['createdAt', 'DESC']],
+    });
   },
 
   async getTaskById(taskId) {
-    const result = await pool.query("SELECT * FROM tasks WHERE id = $1", [taskId]);
-    return result.rows[0];
+    return await Task.findByPk(taskId);
   },
 
-  async createTask(title, description, userId) {
-    const result = await pool.query(
-      "INSERT INTO tasks (title, description, user_id, status) VALUES ($1, $2, $3, 'pending') RETURNING *",
-      [title, description, userId]
-    );
-    return result.rows[0];
+  async createTask(title, description, userId, dueDate, priority) {
+    return await Task.create({ title, description, userId, dueDate, priority });
   },
 
-  async updateTask(taskId, title, description, status) {
-    const result = await pool.query(
-      "UPDATE tasks SET title = $1, description = $2, status = $3 WHERE id = $4 RETURNING *",
-      [title, description, status, taskId]
-    );
-    return result.rows[0];
+  async updateTask(taskId, title, completed, status) {
+    const task = await Task.findByPk(taskId);
+    if (task) {
+      await task.update({ title, completed, status });
+      return await Task.findByPk(taskId);
+    }
+    return null;
+  },
+
+  async updateTaskDetails(taskId, title, completed, status, dueDate, priority) {
+    const task = await Task.findByPk(taskId);
+    if (task) {
+      await task.update({ title, completed, status, dueDate, priority });
+      return await Task.findByPk(taskId);
+    }
+    return null;
   },
 
   async deleteTask(taskId) {
-    await pool.query("DELETE FROM tasks WHERE id = $1", [taskId]);
-    return { message: "Task deleted successfully" };
-  }
+    const task = await Task.findByPk(taskId);
+    if (task) {
+      await task.destroy();
+      return { message: 'Task deleted successfully' };
+    }
+    return null;
+  },
+  async getTasksByDueDate(date) {
+    return await Task.findAll({ where: { dueDate: { [Op.lte]: date } } });
+  },
 };
 
-module.exports = TaskModel;
-
+module.exports = { Task, TaskModel };

@@ -5,13 +5,17 @@ const jwt = require("jsonwebtoken");
 const UserController = {
   async register(req, res, next) {
     try {
-      const { name, email, password } = req.body;
-      if (!name || !email || !password) {
-        return res.status(400).json({ message: "All fields are required" });
+      const { name, email, password } = req.body;      
+      const requiredFields = ["name", "email", "password"];
+      const missingFields = requiredFields.filter((field) => !req.body[field]);
+
+      if (missingFields.length > 0) {
+        return res.status(400).json({ message: `Missing fields: ${missingFields.join(", ")}` });
       }
 
       const existingUser = await UserModel.findUserByEmail(email);
       if (existingUser) {
+        
         return res.status(400).json({ message: "User already exists" });
       }
 

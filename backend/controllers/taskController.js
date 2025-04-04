@@ -35,23 +35,44 @@ const TaskController = {
 
   async updateTask(req, res, next) {
     try {
-      const { title, description, status } = req.body;
       const { id } = req.params;
-      const updatedTask = await TaskModel.updateTask(id, title, description, status);
-      if (!updatedTask) return res.status(404).json({ message: "Task not found" });
-      res.json(updatedTask);
+      const { title, completed, status } = req.body;
+
+      const task = await TaskModel.getTaskById(id);
+      if (!task) return res.status(404).json({ message: "Task not found" });
+
+      const updatedTask = await TaskModel.updateTask(id, title, completed, status);
+      res.status(200).json(updatedTask);
     } catch (error) {
       next(error);
     }
   },
   async deleteTask(req, res, next) {
     try {
-      await TaskModel.deleteTask(req.params.id);
+      const task = await TaskModel.getTaskById(req.params.id);
+      if (!task) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+      await TaskModel.deleteTask(req.params.id);      
       res.json({ message: "Task deleted successfully" });
     } catch (error) {
       next(error);
     }
   },
-};
 
+  async updateTaskDetails(req, res, next) {
+    const { id } = req.params;
+    const { title, completed, status, dueDate, priority } = req.body;
+    try {
+      const task = await TaskModel.getTaskById(id);
+      if (!task) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+      const updatedTask = await TaskModel.updateTaskDetails(id, title, completed, status, dueDate, priority);
+      res.status(200).json(updatedTask);
+    } catch (error) {
+      next(error);
+    }
+  },
+};
 module.exports = TaskController;

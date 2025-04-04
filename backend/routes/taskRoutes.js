@@ -5,10 +5,17 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.get("/", authMiddleware, TaskController.getAllTasks);
-router.get("/:id", authMiddleware, TaskController.getTaskById);
-router.post("/", authMiddleware, TaskController.createTask);
-router.put("/:id", authMiddleware, TaskController.updateTask);
-router.delete("/:id", authMiddleware, TaskController.deleteTask);
+router
+  .route("/")
+  .get(authMiddleware, TaskController.getAllTasks)
+  .post(authMiddleware, TaskController.createTask);
+
+router
+  .route("/:id")
+  .get(authMiddleware, TaskController.getTaskById)
+  .put(authMiddleware, TaskController.updateTask)
+  .delete(authMiddleware, TaskController.deleteTask);
+
+router.put("/:id/details", authMiddleware, TaskController.updateTaskDetails);
 
 module.exports = router;
